@@ -76,8 +76,6 @@ class ANN:
         self.ann.add(tf.keras.layers.Dense(units=6, activation='relu'))
         # add another hidden layer
         self.ann.add(tf.keras.layers.Dense(units=6, activation='relu'))
-        # add another hidden layer
-        self.ann.add(tf.keras.layers.Dense(units=6, activation='relu'))
         
         # final layer with one neuron with no activation function
         self.ann.add(tf.keras.layers.Dense(units=1))
@@ -100,6 +98,3 @@ class ANN:
         self.output = (self.ann.predict(self.X_test))
         print(np.concatenate((self.output.reshape(len(self.output), 1),
               self.Y_test.reshape(len(self.Y_test), 1)), 1))
-        # cm = confusion_matrix(self.Y_test, self.output)
-        # print(cm)
-        # print(accuracy_score(self.Y_test, self.output))
