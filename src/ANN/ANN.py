@@ -42,7 +42,6 @@ class ANN:
                 
         except:
             print("No ANN model is found. Creating one...!")
-            
             self.ann = None
             self.neural_network()
             
