@@ -10,8 +10,9 @@ from sklearn.preprocessing import StandardScaler
 
 
 class ANN:
-    def __init__(self, data_path):
+    def __init__(self, data_path,model_path):
         self.data_path = data_path
+        self.model_path = model_path
         self.dataset = None
         self.X_train = None
         self.X_test = None
@@ -19,7 +20,33 @@ class ANN:
         self.Y_test = None
         self.X = None
         self.Y = None
-        self.ann = None
+        self.output =None 
+        
+        try:    
+            self.preprocess()
+            self.ann = tf.keras.models.load_model(model_path)
+            print("ANN model is loaded...")
+            while(1):  
+                user_input  =  input("should I retrain the model? Y/N ") 
+                if user_input =="Y" :
+                    self.ann = None
+                    self.neural_network()
+                    break
+                    
+                elif user_input =="N":
+                    break
+                
+                else :
+                    print("Please give a valid response...!")
+                
+                
+        except:
+            print("No ANN model is found. Creating one...!")
+            
+            self.ann = None
+            self.neural_network()
+            
+            
 
     def preprocess(self):
         """ Preprocesses the data
@@ -61,7 +88,6 @@ class ANN:
         sc = StandardScaler()
         self.X_train = sc.fit_transform(self.X_train)
         self.X_test = sc.transform(self.X_test)
-        print(self.X_train)
 
     def neural_network(self):
         """Create and train the neural network for the specific set of data
@@ -72,8 +98,8 @@ class ANN:
 
     def __create_neural_network(self):
         self.ann = tf.keras.models.Sequential() # initialise the neural network
-        self.ann.add(tf.keras.layers.Dense(units=10, activation='relu'))  #add first layer of neural network
-        self.ann.add(tf.keras.layers.Dense(units=10, activation='relu')) # add another hidden layer
+        self.ann.add(tf.keras.layers.Dense(units=6, activation='relu'))  #add first layer of neural network
+        self.ann.add(tf.keras.layers.Dense(units=6, activation='relu')) # add another hidden layer
         self.ann.add(tf.keras.layers.Dense(units=1, activation='sigmoid')) #final layer with one neuron with sigmoid activation function
         
     def __compile_neural_network(self):
@@ -82,7 +108,15 @@ class ANN:
         self.ann.compile(optimizer="adam", loss ='binary_crossentropy', metrics = ["accuracy"] )
         
     def __train_neural_network(self):
-        """train the data using the specified data
+        """train and save the model using the specified data
         """
-        self.ann.fit(self.X_train, self.Y_train, batch_size = 32, epochs = 200)
+        self.ann.fit(self.X_train, self.Y_train, batch_size = 32, epochs = 100)
+        self.ann.save(self.model_path)
+        
+    def test_predict(self):
+        """predict the data with the trained neural network
+        """
+        self.output = (self.ann.predict(self.X_test) > 0.5 )
+        print(self.output)
+        
         
