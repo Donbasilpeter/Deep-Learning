@@ -8,7 +8,7 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "./src/ANN/ANN.py",
+            "program": "./src/ANN/main.py",
             "console": "integratedTerminal",
             "justMyCode": true
         }
