@@ -116,6 +116,6 @@ class ANN:
         """predict the data with the trained neural network
         """
         self.output = (self.ann.predict(self.X_test) > 0.5 )
-        print(self.output)
+        print(np.concatenate((self.output.reshape(len(self.output),1), self.Y_test.reshape(len(self.Y_test),1)),1))
         
         
